@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: berth-archiver-source-archive-create
+spec:
+  template:
+    spec:
+      containers:
+      - name: berth-archiver-source-archive-create
+        image: kubeberth/berth-archiver:v1alpha1
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+        env:
+        - name: MODE
+          value: "Create"
+        - name: URL
+          value: "http://minio.home.arpa:9000"
+        - name: ACCESS_KEY
+          value: "minio"
+        - name: SECRET_KEY
+          value: "miniominio"
+        - name: SOURCE
+          value: "Archive"
+        - name: SOURCE_NAME
+          value: "disk-sample"
+        - name: ARCHIVE_NAME
+          value: "disk-sample-from-archive"
+        - name: TARGET
+          value: "minio/kubeberth/archives"
+      restartPolicy: Never

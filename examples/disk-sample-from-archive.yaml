@@ -1,0 +1,9 @@
+apiVersion: berth.kubeberth.io/v1alpha1
+kind: Archive
+metadata:
+  name: disk-sample-archive
+  namespace: kubeberth
+spec:
+  source: 
+    archive:
+      name: disk-sample

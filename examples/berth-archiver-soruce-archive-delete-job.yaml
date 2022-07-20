@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: berth-archiver-source-archive-delete
+spec:
+  template:
+    spec:
+      containers:
+      - name: berth-archiver-source-archive-delete
+        image: kubeberth/berth-archiver:v1alpha1
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+        env:
+        - name: MODE
+          value: "Delete"
+        - name: URL
+          value: "http://minio.home.arpa:9000"
+        - name: ACCESS_KEY
+          value: "minio"
+        - name: SECRET_KEY
+          value: "miniominio"
+        - name: ARCHIVE_NAME
+          value: "disk-sample-from-archive"
+        - name: TARGET
+          value: "minio/kubeberth/archives"
+      restartPolicy: Never

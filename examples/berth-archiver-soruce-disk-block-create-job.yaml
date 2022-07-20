@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: berth-archiver-source-disk-create
+spec:
+  template:
+    spec:
+      containers:
+      - name: berth-archiver-source-disk-create
+        image: kubeberth/berth-archiver:v1alpha1
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+        env:
+        - name: MODE
+          value: "Create"
+        - name: URL
+          value: "http://minio.home.arpa:9000"
+        - name: ACCESS_KEY
+          value: "minio"
+        - name: SECRET_KEY
+          value: "miniominio"
+        - name: SOURCE
+          value: "Disk"
+        - name: SOURCE_NAME
+          value: "disk-sample"
+        - name: ARCHIVE_NAME
+          value: "disk-sample"
+        - name: TARGET
+          value: "minio/kubeberth/archives"
+        - name: VOLUME_MODE
+          value: "Block"
+        volumeDevices:
+        - name: disk
+          devicePath: /dev/disk-sample
+      restartPolicy: Never
+      volumes:
+      - name: disk
+        persistentVolumeClaim:
+          claimName: disk-sample-disk
